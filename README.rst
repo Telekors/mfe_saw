@@ -1,4 +1,4 @@
-McAfee SIEM API Wrapper: mfe_saw
+McAfee SIEM API Wrapper: MFE_SAW
 ===============================
 
 .. image:: https://img.shields.io/pypi/v/mfe_saw.svg
@@ -12,9 +12,9 @@ McAfee SIEM API Wrapper: mfe_saw
         :alt: Documentation Status
 
 
-McAfee SIEM API Wrapper (MFE_SAW) for McAfee ESM 10.x+
+McAfee SIEM API Wrapper: MFE_SAW for McAfee ESM 10.x+
 
-mfe_saw is a wrapper around the McAfee ESM API versions 10.x and above.
+MFE_SAW is a wrapper around the McAfee ESM API versions 10.x and above.
 
 This project attempts to provide a pythonic interface to various parts of
 the product starting with interacting with datasources. 
@@ -59,7 +59,7 @@ mfe_saw officially supports Python 3.5–3.7 on Windows and Linux.
 Installation
 ------------
 
-To install mfe_saw, use pip:
+To install MFE_SAW, use pip:
 
 .. code-block:: bash
 
