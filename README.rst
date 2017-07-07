@@ -54,18 +54,17 @@ Feature Support
 - ESM status methods
 - More to come!
 
-mfe_saw officially supports Python 3.5–3.7.
+mfe_saw officially supports Python 3.5–3.7 on Windows and Linux.
 
 Installation
 ------------
 
-To install Requests, simply:
+To install mfe_saw, use pip:
 
 .. code-block:: bash
 
     $ pip install mfe_saw
-    ✨🍰✨
-
+    
 
 Documentation
 -------------
