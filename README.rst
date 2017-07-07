@@ -37,11 +37,9 @@ Here is an example:
    'Snare for Windows', 'tz_id': '', 'date_order': '', 'port': '', 
    'syslog_tls': 'F', 'client_groups': '0'}
 
-Plus much more!
    
 .. image:: https://raw.githubusercontent.com/andywalden/mfe_saw/master/docs/_static/mfe_saw_bw.png
-    :target: http://http://mfe-saw.readthedocs.io/en/latest/index.html
-
+    :target: http://mfe-saw.readthedocs.io/en/latest/index.html
 
 Feature Support
 ---------------
@@ -51,8 +49,10 @@ Feature Support
 - Built-in multiprocessing for high performance
 - Pass through of native API methods 
 - CLI interface
-- 
-
+- Get info for existing datasources
+- Add new datasources 
+- ESM status methods
+- More to come!
 
 mfe_saw officially supports Python 3.5–3.7.
 
