@@ -71,5 +71,33 @@ PARAMS = {
                  'NBYTES': '0'}
                  """),
 
-}
+    'new_ds': ("dsAddDataSource", 
+                """datasource": {
+                        'parentId': {'value': '%(parent_id)s'},
+                        'name': '%(ds_name)s',
+                        'id': {'value': '%(ds_id)s'},
+                        'typeId': {'value': '%(type_id)s'},
+                        'childEnabled': '%(child_enabled)s',
+                        'childCount': '%(child_count)s',
+                        'childType': '%(child_type)s',
+                        'ipAddress': '%(ds_ip)s',
+                        'zoneId': '%(zone_id)s',
+                        'url': '%(url)s',
+                        'enabled': '%(enabled)s',
+                        'idmId': '%(idm_id)s'
+                    }}"""
 
+    'new_client_ds': ("DS_ADDDSCLIENT", 
+                     """{'PID': '%(parent_id)s',
+                     'NAME': '%(name)s',
+                     'ENABLED': '%(enabled)s',
+                     'IP': '%(ds_ip)s',
+                     'HOST': '%(hostname)s',
+                     'TYPE': '%(type_id)s',
+                     'TZID': '%(tz_id)s',
+                     'DORDER': '%(dorder)s',
+                     'MASKFLAG': '%(maskflag)s',
+                     'PORT': '%(port)s',
+                     'USETLS': '%(use_tls)s'
+                    }"""
+}
