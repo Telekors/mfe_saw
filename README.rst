@@ -39,7 +39,7 @@ Here is an example:
 
 Plus much more!
    
-.. image:: https://raw.githubusercontent.com/andywalden/master/docs/_static/mfe_saw_bw.png
+.. image:: https://raw.githubusercontent.com/andywalden/mfe_saw/master/docs/_static/mfe_saw_bw.png
     :target: http://http://mfe-saw.readthedocs.io/en/latest/index.html
 
 
