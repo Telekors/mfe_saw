@@ -1,0 +1,53 @@
+language: python
+sudo: false
+cache: pip
+env:
+  global:
+    - LD_PRELOAD=/lib/x86_64-linux-gnu/libSegFault.so
+    - SEGFAULT_SIGNALS=all
+  matrix:
+    - TOXENV=check
+    - TOXENV=docs
+matrix:
+  include:
+    - python: '3.3'
+      env:
+        - TOXENV=py33,report
+    - python: '3.4'
+      env:
+        - TOXENV=py34,report
+    - python: '3.5'
+      env:
+        - TOXENV=py35,report
+    - python: '3.6'
+      env:
+        - TOXENV=py36,report
+    - python: 'pypy-5.4'
+      env:
+        - TOXENV=pypy,report
+before_install:
+  - python --version
+  - uname -a
+  - lsb_release -a
+install:
+  - pip install tox
+  - virtualenv --version
+  - easy_install --version
+  - pip --version
+  - tox --version
+script:
+  - tox -v
+after_failure:
+  - more .tox/log/* | cat
+  - more .tox/*/log/* | cat
+notifications:
+  email:
+    on_success: never
+    on_failure: always
+deploy:
+  provider: pypi
+  user: andywalden
+  password:
+    secure: JRgTRE4O56d7xDQWl09ctrL14XRDCvCGb5gvuV1qU90JcvFypNdTvtH5Jh2g+VJ/GqMLg8EFNtrh9j7I9iW6Ub0+OvOhQoNZxf8u/56Jv5NVwy2KSx6KFsmYa6cUbvgnIc6h2qOdHsQ9Yba1XVyP6OMuPLdCkEmJbzqnjrlj/woFel3MJfSznLz7K/yIWAuJew5C51RFE38QMYZAJCF3KZjeYuu0IapF9J/GPLABl7A9OHH27s2HyO/ctKJOrrgBhGLfhrqLheNrFbo16JyEVvKza5+BykLsyzo+LiSjCWOSrNysIK6xihtGMPWjxUpwiNssf438eTu3DWehv9A+NPvoXQAxqedjKIwa4dXn71za3BYB+jOOIZ+5HUIjYKn+K+hsuJ6sZE1xmJG5GYx4e8fOTX5wcno5NSbzwR6XFYjBU6KNPHT9yAPPOVXkvdGxPbbP4jVPlXXfL80DBogRTQJugW2A1zP9FEnpQgJucigMynPA12akSGJfFhWQQu4aQ4fiASGB1QoOajZfzENHTGZ6OGr4M8q+uYFcSWcPc/n52DfAyrlEJBGaUVMmwMPZbHupQb0VG2mMDVSPOJ6gS1Qt9siYUqFh7oSSHbaUflTiNJRE2M5RtTHRQ7cvKtnysYlo+ag30A3c+wv8jy2SB2y46lPzdAJRpdCRZuOU4+4=
+  on:
+    tags: true
