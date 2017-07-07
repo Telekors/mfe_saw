@@ -85,7 +85,7 @@ PARAMS = {
                         'url': '%(url)s',
                         'enabled': '%(enabled)s',
                         'idmId': '%(idm_id)s'
-                    }}"""
+                    }}"""),
 
     'new_client_ds': ("DS_ADDDSCLIENT", 
                      """{'PID': '%(parent_id)s',
@@ -99,5 +99,5 @@ PARAMS = {
                      'MASKFLAG': '%(maskflag)s',
                      'PORT': '%(port)s',
                      'USETLS': '%(use_tls)s'
-                    }"""
+                    }""")
 }

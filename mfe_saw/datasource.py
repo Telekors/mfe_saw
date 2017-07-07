@@ -76,7 +76,6 @@ class DevTree(Base):
         get_devtree callback to format results
         """
         self.resp = resp
-        print(self.resp['ITEMS'])
         self.resp = dehexify(resp['ITEMS'])
         return self.resp
 
@@ -189,9 +188,17 @@ class DevTree(Base):
         self.ftoken = ftoken
         self.method, self.data = self.get_params(sys._getframe().f_code.co_name)
         self.resp = self.post(self.method, self.data)
-        print(self.resp['DATA'])
         self.resp = dehexify(self.resp['DATA'])
         return self.resp
+    
+    def add_ds(self, ds_obj):
+        """
+        Adds a datasource
+        
+        """
+        self.datasource = db_obj
+        self.method, self.data = self.get_params(sys._getframe().f_code.co_name)
+        
 
 class Datasource(Base):
     """
@@ -226,21 +233,22 @@ class Datasource(Base):
             self._hostname = self.dsconf.pop('hostname')
         except KeyError:
             pass
-
+        
+        self.ds_ip = None
         try:
             self.ds_ip = self.dsconf.pop('ip')
-            print(self.valid_ip(self.ds_ip))
-            if self.valid_ip(self.ds_ip):
-                print("it's good")
-                self._ip = self.ds_ip
-            else:
-                raise ValueError("Datasource requires a valid IP: {}"
-                                 .format(self.ds_ip))
         except KeyError:
+            pass
+        
+        if not self.ds_ip:
+            try:
+                self.ds_ip = self.dsconf.pop('ds_ip')
+            except KeyError:
+                pass
+                
+        if not self.ds_ip:
             try:
                 self.ds_ip = self.dsconf.pop('ipAddress')
-                if self.valid_ip(self.ds_ip):
-                    self._ip = self.ds_ip
             except KeyError:
                 try:
                     if self.hostname is not None:
@@ -352,7 +360,7 @@ class Datasource(Base):
         try:
             self._syslog_port = self.dsconf.pop('syslog_port')
         except KeyError:
-            pass
+            self._syslog_port = "0"
 
         try:
             self._user_id = self.dsconf.pop('userID')
@@ -364,12 +372,21 @@ class Datasource(Base):
         except KeyError:
             pass
 
+        try:
+            self._dorder = self.dsconf.pop('dorder')
+        except KeyError:
+            self._dorder = "0"
+
+        try:
+            self._maskflag = self.dsconf.pop('maskflag')
+        except KeyError:
+            self._maskflag = "true"
 
     @staticmethod
     def isprop(v):
         return isinstance(v, property)
 
-    def get_props(self):
+    def props(self):
         return [prop
                 for (prop, val) in inspect.getmembers(Datasource, self.isprop)]
 
@@ -378,7 +395,7 @@ class Datasource(Base):
 
     @property
     def ip(self):
-        return self._ip
+        return self.ds_ip
 
     @property
     def parent_id(self):
@@ -452,6 +469,14 @@ class Datasource(Base):
     def user_id(self):
         return self._user_id
 
+    @property
+    def dorder(self):
+        return self._dorder
+        
+    @property
+    def maskflag(self):
+        return self._maskflag
+        
 
     @staticmethod
     def valid_ip(ipaddr):
