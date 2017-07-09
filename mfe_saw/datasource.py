@@ -28,7 +28,7 @@ class DevTree(Base):
     Interface to the ESM device tree.
     """
     def __init__(self, scope=None):
-        """Coordinate assembly of the devtree"""
+        """Coordinates assembly of the devtree"""
         super().__init__()
         self.scope = scope
         self.devtree = self.get_devtree()
@@ -135,7 +135,6 @@ class DevTree(Base):
             if self.row[2] == "3":  # Client group datasource group containers
                 self.row.pop(0)     # are fake datasources that seemingly have
                 self.row.pop(0)     # two uneeded fields at the beginning.
-            #print(self.row)
 
             self.ds_fields = {'dev_type': self.row[0],
                               'name': self.row[1],
@@ -159,6 +158,13 @@ class DevTree(Base):
     def get_client_groups(self):
         """
         Retrieve client lists from each parent group
+        
+        Args:
+            ds_id (str): Parent ds_id(s) are collected on init
+            ftoken (str): Set and used after requesting clients for ds_id
+        
+        Returns:
+            List of dicts representing all of the client data sources 
         """
         self.client_lod = []
         for self.parent in self.parent_datasources:
@@ -166,17 +172,18 @@ class DevTree(Base):
             self.resp = self.find_client_group(self.ds_id)
             self.ftoken = self.resp['FTOKEN']
             self.resp = self.get_file(self.ftoken)
-            self.client_dict = self.clients_to_lod(self.resp)
+            self.client_dict = self.clients_to_lod(self.resp, self.ds_id)
             self.client_lod.append(self.client_dict)
         return self.client_lod
 
 
-    def clients_to_lod(self, clients):
+    def clients_to_lod(self, clients, ds_id):
         """
         Parse key fields from 'DS_GETDSCLIENTLIST'.
         Return clients as list of dicts
         """
         self.clients = clients
+        self.ds_id = ds_id
         self.clients_csv = csv.reader(self.clients.split('\n'), delimiter=',')
         self.parsed_clients = []
         for self.row in self.clients_csv:
@@ -199,7 +206,8 @@ class DevTree(Base):
                               'date_order': self.row[9],
                               'port': self.row[11],
                               'syslog_tls': self.row[12],
-                              'client_groups': "0"
+                              'client_groups': "0",
+                              'parent_id': self.ds_id
                               }
             self.parsed_clients.append(self.ds_fields)
         return self.parsed_clients
@@ -255,8 +263,8 @@ class DevTree(Base):
         from operator import itemgetter
         self.ordered = (sorted(self.devtree2, key=lambda x: int(itemgetter('_cnt')(x))))
                                                
-        for self.x in self.ordered:
-            print(self.x)
+#        for self.x in self.ordered:
+#            print(self.x)
         
 
 class DataSource(Base):
