@@ -47,8 +47,8 @@
 
 PARAMS = {
     'login': ("login",
-              """{'username': '%(username)s',
-                 'password' : '%(password)s',
+              """{'username': '%(_username)s',
+                 'password' : '%(_password)s',
                  'locale': 'en_US',
                  'os': 'Win32'}
                  """),
@@ -71,7 +71,25 @@ PARAMS = {
                  'NBYTES': '0'}
                  """),
 
-    'new_ds': ("dsAddDataSource", 
+    'map_dtree': ("map_dtree",
+                  """{'dev_type': '%(dev_type)s',
+                  'name': '%(ds_name)s',
+                  'ds_id': '%(ds_id)s',
+                  'enabled': '%(enabled)s',
+                  'ds_ip': '%(ds_ip)s',
+                  'hostname' : '%(hostname)s',
+                  'typeID': '%(type_id)s',
+                  'vendor': "",
+                  'model': "",
+                  'tz_id': "",
+                  'date_order': "",
+                  'port': "",
+                  'syslog_tls': "",
+                  'client_groups': '%(client_groups)s'
+                  }
+                  """),
+                 
+    'add': ("dsAddDataSource", 
                 """datasource": {
                         'parentId': {'value': '%(parent_id)s'},
                         'name': '%(ds_name)s',

@@ -25,41 +25,56 @@ class Base(object):
     """
     The Base class for mfe_saw objects
     """
-    headers = {'Content-Type': 'application/json'}
-    baseurl = None
-    basepriv = None
-    max_workers = 5
-    ssl_verify = False
-    params = PARAMS
+    _headers = {'Content-Type': 'application/json'}
+    _baseurl = None
+    _basepriv = None
+    _max_workers = 5
+    _ssl_verify = False
+    _params = PARAMS
+    _dev_type = {'14', 'ESM',
+                 '2', 'ERC',
+                 '20', 'EPO',
+                 '3', 'datasource',
+                 '254', 'client_group',
+                 '23', 'NSP Port',
+                 '20', 'EPO Module',
+                 '5', 'DBM Database',
+                 '17', 'Score-based Correlation',
+                 '21', 'McAfee Network Security Manager (NSP)',
+                 '23', 'McAfee NSP Port',
+                 '19', 'McAfee ePolicy Orchestrator (ePO)',
+                 '10', 'Application Data Monitor (ADM)',
+                 '25', 'Enterprise Log Search (ELS)',
+                 '4', 'Database Event Monitor (DBM)',
+                 '15', 'Advanced Correlation Engine (ACE)',
+                 }
 
-    #def __init__(self, params=PARAMS, **kwargs):
     def __init__(self, **kwargs):
         """
         Base Class for mfe_saw objects.
 
         """
-        #self.params = PARAMS
-        self.kwargs = kwargs
+        self._kwargs = kwargs
 
-        self.uri = None
-        self.data = None
-        self.url = None
-        self.resp = None
-        self.host = None
-        self.user = None
-        self.passwd = None
-        self.username = None
-        self.password = None
-        self.cmd = None
-        self.future = None
-        self.result = None
-        self.method = None
+        self._url = None
+        self._data = None
+        self._uri = None
+        self._resp = None
+        self._host = None
+        self._user = None
+        self._passwd = None
+        self._username = None
+        self._password = None
+        self._cmd = None
+        self._future = None
+        self._result = None
+        self._method = None
 
 
-        if not self.ssl_verify:
+        if not self._ssl_verify:
             urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-        self.ex = ThreadPoolExecutor(max_workers=Base.max_workers,)
+        self._ex = ThreadPoolExecutor(max_workers=Base._max_workers,)
 
     @property
     def name(self):
@@ -69,42 +84,42 @@ class Base(object):
     @name.setter
     def name(self, name):
         """name setter"""
-        if re.search("^[a-zA-Z0-9_-]{1,100}$", name):
+        if re.search('^[a-zA-Z0-9_-]{1,100}$', name):
             self._name = name
         else:
-            raise ValueError("Name not valid")
+            raise ValueError('Name not valid')
 
     def login(self, host, user, passwd):
         """
         The login method
         """
-        self.host = host
-        self.user = user
-        self.passwd = passwd
+        self._host = host
+        self._user = user
+        self._passwd = passwd
 
-        Base.baseurl = "https://{}/rs/esm/".format(self.host)
-        Base.basepriv = "https://{}/ess".format(self.host)
+        Base._baseurl = 'https://{}/rs/esm/'.format(self._host)
+        Base._basepriv = 'https://{}/ess'.format(self._host)
 
-        self.username = base64.b64encode(self.user.encode('utf-8')).decode()
-        self.password = base64.b64encode(self.passwd.encode('utf-8')).decode()
-        del self.passwd
-        self.url = Base.baseurl + "login"
-        self.method, self.data = self.get_params('login')
-        self.resp = self.post(self.method, self.data)
+        self._username = base64.b64encode(self._user.encode('utf-8')).decode()
+        self._password = base64.b64encode(self._passwd.encode('utf-8')).decode()
+        del self._passwd
+        self._url = Base._baseurl + 'login'
+        self._method, self._data = self.get_params('login')
+        self._resp = self.post(self._method, self._data)
         try:
-            Base.headers['Cookie'] = self.resp.headers.get('Set-Cookie')
-            Base.headers['X-Xsrf-Token'] = self.resp.headers.get('Xsrf-Token')
+            Base._headers['Cookie'] = self._resp.headers.get('Set-Cookie')
+            Base._headers['X-Xsrf-Token'] = self._resp.headers.get('Xsrf-Token')
         except AttributeError:
             raise ESMAuthError()
     def get_params(self, method):
         """
         Look up parameters in params dict
         """
-        self.method = method
-        self.method, self.data = self.params.get(method)
-        self.data = self.data % self.__dict__
-        self.data = ast.literal_eval(''.join(self.data.split()))
-        return self.method, self.data
+        self._method = method
+        self._method, self.data = self._params.get(self._method)
+        self._data = self.data % self.__dict__
+        self._data = ast.literal_eval(''.join(self._data.split()))
+        return self._method, self._data
 
     @staticmethod
     def _format_params(cmd, **params):
@@ -112,8 +127,8 @@ class Base(object):
         Format private API call
         """
         params = {k: v for k, v in params.items() if v is not None}
-        params = "%14".join([k + "%13" + v + "%13" for (k, v) in params.items()])
-        params = "Request=API%13" + cmd + "%13%14" + params + "%14"
+        params = '%14'.join([k + '%13' + v + '%13' for (k, v) in params.items()])
+        params = 'Request=API%13' + cmd + '%13%14' + params + '%14'
         return params
 
     @staticmethod
@@ -141,43 +156,47 @@ class Base(object):
         """
         Wrapper around _post method
         """
-        self.method = method
-        self.data = data
-        self.callback = callback
-        self.url = Base.baseurl + self.method
-        if self.method == self.method.upper():
-            self.url = Base.basepriv
-            self.data = self._format_params(self.method, **self.data)
+        self._method = method
+        self._data = data
+        self._callback = callback
+        self._url = Base._baseurl + self._method
+        if self._method == self._method.upper():
+            self._url = Base._basepriv
+            self._data = self._format_params(self._method, **self._data)
         else:
-            self.url = Base.baseurl + self.method
-            if self.data:
+            self._url = Base._baseurl + self._method
+            if self._data:
                 try:
-                    self.data = json.dumps(self.data)
+                    self._data = json.dumps(self._data)
                 except json.JSONDecodeError:
                     raise ESMParamsError()
-        self.future = self.ex.submit(self._post, url=self.url,
-                                     data=self.data,
-                                     headers=self.headers,
-                                     verify=self.ssl_verify)
-        self.resp = self.future.result()
+        self._future = self._ex.submit(self._post, url=self._url,
+                                     data=self._data,
+                                     headers=self._headers,
+                                     verify=self._ssl_verify)
+        self._resp = self._future.result()
 
-        if self.method == self.method.upper():
-            self.resp = self._format_priv_resp(self.resp)
+        if self._method == self._method.upper():
+            self._resp = self._format_priv_resp(self._resp)
 
-        if self.callback:
-            self.resp = self.callback(self.resp)
-        return self.resp
+        if self._callback:
+            self._resp = self._callback(self._resp)
+        return self._resp
 
 
     def _post(self, url, data=None, headers=None, verify=False):
         """
         Method that actually kicks off the HTTP client.
         """
-        self.resp = requests.post(url, data=data, headers=headers, verify=verify)
-        self.denied = [400, 401, 403]
-        if 200 <= self.resp.status_code <= 300:
-            return self.resp
-        elif self.resp.status_code in self.denied:
-            return (self.resp.status_code, "Not Authorized!")
+        self._url = url
+        self._data = data
+        self._headers = headers
+        self._verify = verify
+        self._resp = requests.post(self._url, data=self._data, headers=self._headers, verify=self._verify)
+        self._denied = [400, 401, 403]
+        if 200 <= self._resp.status_code <= 300:
+            return self._resp
+        elif self._resp.status_code in self._denied:
+            return (self._resp.status_code, 'Not Authorized!')
         else:
-            return (self.resp.status_code, self.resp.text)
+            return (self._resp.status_code, self._resp.text)

@@ -16,3 +16,8 @@ class ESMParamsError(ESMException):
 class ESMAuthError(ESMException):
     """Indicate a login failure"""
     pass
+
+class DupDataSource(ESMException):
+    """Generated when a duplicate datasource is returned"""
+    pass
+    
