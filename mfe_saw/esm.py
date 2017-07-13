@@ -7,7 +7,7 @@ import json
 
 try:
     from mfe_saw.base import Base
-except ModuleNotFoundError:
+except ImportError:
     from base import Base
 
 class ESM(Base):
@@ -150,3 +150,8 @@ class ESM(Base):
                         'rulesAndSoftNextCheck']
         return {self.key: self.val for self.key, self.val in self.status().items()
                 if self.key in self._fields}
+
+    def get_timezones(self):
+        """
+        """
+        print(self.post('userGetTimeZones'))

@@ -17,7 +17,7 @@ import urllib3
 try:
     from mfe_saw.params import PARAMS
     from mfe_saw.exceptions import ESMAuthError, ESMParamsError
-except ModuleNotFoundError:
+except ImportError:
     from params import PARAMS
     from exceptions import ESMAuthError, ESMParamsError
 

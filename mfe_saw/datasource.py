@@ -19,7 +19,7 @@ try:
     from mfe_saw.base import Base
     from mfe_saw.utils import dehexify
     from mfe_saw.exceptions import DupDataSource
-except ModuleNotFoundError:
+except ImportError:
     from base import Base
     from utils import dehexify
 
@@ -88,10 +88,10 @@ class DevTree(Base):
         self.search_fields = ['ds_ip', 'name']
         if self.inc_hostname:
             self.search_fields.append('hostname')
-
+        
         self.found = [ds for field in self.search_fields
-                      for ds in self.devtree if ds[field] == term.lower()]
-
+                      for ds in self.devtree if ds[field].lower() == term.lower()]
+                    
         if self.found:
             return self.found[0]
 
