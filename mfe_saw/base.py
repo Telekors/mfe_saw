@@ -31,22 +31,20 @@ class Base(object):
     _max_workers = 5
     _ssl_verify = False
     _params = PARAMS
-    _dev_type = {'14', 'ESM',
-                 '2', 'ERC',
-                 '20', 'EPO',
+    _dev_type = {'2', 'ERC',
                  '3', 'datasource',
-                 '254', 'client_group',
-                 '23', 'NSP Port',
-                 '20', 'EPO Module',
-                 '5', 'DBM Database',
-                 '17', 'Score-based Correlation',
-                 '21', 'McAfee Network Security Manager (NSP)',
-                 '23', 'McAfee NSP Port',
-                 '19', 'McAfee ePolicy Orchestrator (ePO)',
-                 '10', 'Application Data Monitor (ADM)',
-                 '25', 'Enterprise Log Search (ELS)',
                  '4', 'Database Event Monitor (DBM)',
+                 '5', 'DBM Database',
+                 '10', 'Application Data Monitor (ADM)',
+                 '14', 'ESM',
                  '15', 'Advanced Correlation Engine (ACE)',
+                 '17', 'Score-based Correlation',
+                 '19', 'McAfee ePolicy Orchestrator (ePO)',
+                 '20', 'EPO',
+                 '21', 'McAfee Network Security Manager (NSP)',
+                 '23', 'NSP Port',
+                 '25', 'Enterprise Log Search (ELS)',
+                 '254', 'client_group',
                  }
 
     def __init__(self, **kwargs):
@@ -111,6 +109,7 @@ class Base(object):
             Base._headers['X-Xsrf-Token'] = self._resp.headers.get('Xsrf-Token')
         except AttributeError:
             raise ESMAuthError()
+            
     def get_params(self, method):
         """
         Look up parameters in params dict

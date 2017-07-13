@@ -20,6 +20,3 @@ def main():
     Main function
     """
 
-esm = ESM()
-tree = DevTree()
-print(tree.search("mail"))

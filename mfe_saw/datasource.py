@@ -18,10 +18,11 @@ from itertools import chain
 try:
     from mfe_saw.base import Base
     from mfe_saw.utils import dehexify
-    from mfe_saw.exceptions import DupDataSource
+    from mfe_saw.exceptions import ESMException
 except ImportError:
     from base import Base
     from utils import dehexify
+    from exceptions import ESMException
 
 class DevTree(Base):
     """
@@ -30,6 +31,8 @@ class DevTree(Base):
     def __init__(self, scope=None):
         """Coordinates assembly of the devtree"""
         super().__init__()
+        if Base._baseurl == None:
+            raise ESMException('ESM URL not set. Are you logged in?')
         self.scope = scope
         self.devtree = self.get_devtree()
         self.devtree = self.devtree_to_lod(self.devtree)
@@ -282,7 +285,9 @@ class DataSource(Base):
         """This inits the datasource
     
         """
-    
+        super().__init__()
+        if Base._baseurl == None:
+            raise ESMException('ESM URL not set. Are you logged in?')    
         self._ds_conf = dsconf
         self.__dict__.update(self._ds_conf)
         self._var_d = vars(self).copy()
