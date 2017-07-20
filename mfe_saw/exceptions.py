@@ -8,16 +8,7 @@ class ESMException(Exception):
     """Base Exception"""
     pass
 
-class ESMParamsError(ESMException):
-    """Raised when params aren't parsable"""
+class ESMDataSourceNotFound(ESMException):
+    """Raised when the ESM returns an error while: 
+    'deserializing ESMDataSourceDetail"""
     pass
-
-
-class ESMAuthError(ESMException):
-    """Indicate a login failure"""
-    pass
-
-class DupDataSource(ESMException):
-    """Generated when a duplicate datasource is returned"""
-    pass
-    

@@ -16,10 +16,10 @@ import urllib3
 
 try:
     from mfe_saw.params import PARAMS
-    from mfe_saw.exceptions import ESMAuthError, ESMParamsError
+    from mfe_saw.exceptions import ESMException, ESMDataSourceNotFound
 except ImportError:
     from params import PARAMS
-    from exceptions import ESMAuthError, ESMParamsError
+    from exceptions import ESMException, ESMDataSourceNotFound
 
 class Base(object):
     """
@@ -28,25 +28,10 @@ class Base(object):
     _headers = {'Content-Type': 'application/json'}
     _baseurl = None
     _basepriv = None
-    _max_workers = 5
+    _max_workers = 10
     _ssl_verify = False
     _params = PARAMS
-    _dev_type = {'2', 'ERC',
-                 '3', 'datasource',
-                 '4', 'Database Event Monitor (DBM)',
-                 '5', 'DBM Database',
-                 '10', 'Application Data Monitor (ADM)',
-                 '14', 'ESM',
-                 '15', 'Advanced Correlation Engine (ACE)',
-                 '17', 'Score-based Correlation',
-                 '19', 'McAfee ePolicy Orchestrator (ePO)',
-                 '20', 'EPO',
-                 '21', 'McAfee Network Security Manager (NSP)',
-                 '23', 'NSP Port',
-                 '25', 'Enterprise Log Search (ELS)',
-                 '254', 'client_group',
-                 }
-
+    
     def __init__(self, **kwargs):
         """
         Base Class for mfe_saw objects.
@@ -67,25 +52,12 @@ class Base(object):
         self._future = None
         self._result = None
         self._method = None
-
+        self._name = None
 
         if not self._ssl_verify:
             urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
         self._ex = ThreadPoolExecutor(max_workers=Base._max_workers,)
-
-    @property
-    def name(self):
-        """name Getter"""
-        return self._name
-
-    @name.setter
-    def name(self, name):
-        """name setter"""
-        if re.search('^[a-zA-Z0-9_-]{1,100}$', name):
-            self._name = name
-        else:
-            raise ValueError('Name not valid')
 
     def login(self, host, user, passwd):
         """
@@ -103,7 +75,7 @@ class Base(object):
         del self._passwd
         self._url = Base._baseurl + 'login'
         self._method, self._data = self.get_params('login')
-        self._resp = self.post(self._method, self._data)
+        self._resp = self.post(self._method, self._data, raw=True)
         try:
             Base._headers['Cookie'] = self._resp.headers.get('Set-Cookie')
             Base._headers['X-Xsrf-Token'] = self._resp.headers.get('Xsrf-Token')
@@ -135,7 +107,6 @@ class Base(object):
         """
         Format response from private API
         """
-        resp = resp.text
         resp = re.search('Response=(.*)', resp).group(1)
         resp = resp.replace('%14', ' ')
         pairs = resp.split()
@@ -151,14 +122,16 @@ class Base(object):
             formatted[key] = value
         return formatted
 
-    def post(self, method, data=None, callback=None):
+    def post(self, method, data=None, callback=None, raw=False):
         """
         Wrapper around _post method
         """
         self._method = method
         self._data = data
         self._callback = callback
+        self._raw = raw
         self._url = Base._baseurl + self._method
+        
         if self._method == self._method.upper():
             self._url = Base._basepriv
             self._data = self._format_params(self._method, **self._data)
@@ -169,33 +142,51 @@ class Base(object):
                     self._data = json.dumps(self._data)
                 except json.JSONDecodeError:
                     raise ESMParamsError()
+
         self._future = self._ex.submit(self._post, url=self._url,
                                      data=self._data,
                                      headers=self._headers,
                                      verify=self._ssl_verify)
         self._resp = self._future.result()
 
-        if self._method == self._method.upper():
-            self._resp = self._format_priv_resp(self._resp)
+        if self._raw:
+            return self._resp
 
-        if self._callback:
-            self._resp = self._callback(self._resp)
-        return self._resp
-
+        if 200 <= self._resp.status_code <= 300:
+            try:
+                self._resp = self._resp.json()
+                self._resp = self._resp.get('return')
+            except json.decoder.JSONDecodeError:
+                self._resp = self._resp.text
+            if self._method == self._method.upper():
+                self._resp = self._format_priv_resp(self._resp)
+            if self._callback:
+                self._resp = self._callback(self._resp)
+            return self._resp
+        elif self._resp.status_code == 400: 
+            if self._resp.text.startswith('Error deserializing EsmDataSourceDetail'):
+                raise ESMDataSourceNotFound
+        
 
     def _post(self, url, data=None, headers=None, verify=False):
         """
         Method that actually kicks off the HTTP client.
+        
+        Args:
+            url (str): URL to send the post to.
+            data (str): Any payload data for the post.
+            headers (str): http headers that hold cookie data after 
+                            authentication.
+            verify (bool): SSL cerificate verification 
+        
+        Returns:
+            Requests Response object
         """
         self._url = url
         self._data = data
         self._headers = headers
         self._verify = verify
-        self._resp = requests.post(self._url, data=self._data, headers=self._headers, verify=self._verify)
-        self._denied = [400, 401, 403]
-        if 200 <= self._resp.status_code <= 300:
-            return self._resp
-        elif self._resp.status_code in self._denied:
-            return (self._resp.status_code, 'Not Authorized!')
-        else:
-            return (self._resp.status_code, self._resp.text)
+        return requests.post(self._url, 
+                                    data=self._data, 
+                                    headers=self._headers, 
+                                    verify=self._verify)

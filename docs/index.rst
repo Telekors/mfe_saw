@@ -3,8 +3,8 @@
    You can adapt this file completely to your liking, but it should at least
    contain the root `toctree` directive.
 
-Welcome to mfe_saw's documentation!
-======================================
+McAfee SIEM API Wrapper (MFE_SAW)
+=================================
 
 Contents:
 
@@ -14,9 +14,6 @@ Contents:
    readme
    installation
    usage
-   contributing
-   authors
-   history
 
 Indices and tables
 ==================

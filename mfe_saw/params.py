@@ -79,22 +79,22 @@ PARAMS = {
                   'ds_ip': '%(ds_ip)s',
                   'hostname' : '%(hostname)s',
                   'typeID': '%(type_id)s',
-                  'vendor': "",
-                  'model': "",
-                  'tz_id': "",
-                  'date_order': "",
-                  'port': "",
-                  'syslog_tls': "",
+                  'vendor': '',
+                  'model': '',
+                  'tz_id': '',
+                  'date_order': '',
+                  'port': '',
+                  'syslog_tls': '',
                   'client_groups': '%(client_groups)s'
                   }
                   """),
                  
-    'add': ("dsAddDataSource", 
-                """datasource": {
-                        'parentId': {'value': '%(parent_id)s'},
-                        'name': '%(ds_name)s',
-                        'id': {'value': '%(ds_id)s'},
-                        'typeId': {'value': '%(type_id)s'},
+    'add_parent': ("dsAddDataSource", 
+                """ {'datasource': {
+                        'parentId': {'id': '%(parent_id)s'},
+                        'name': '%(name)s',
+                        'id': {'id': '%(ds_id)s'},
+                        'typeId': {'id': '%(type_id)s'},
                         'childEnabled': '%(child_enabled)s',
                         'childCount': '%(child_count)s',
                         'childType': '%(child_type)s',
@@ -105,7 +105,7 @@ PARAMS = {
                         'idmId': '%(idm_id)s'
                     }}"""),
 
-    'new_client_ds': ("DS_ADDDSCLIENT", 
+    'add_client': ("DS_ADDDSCLIENT", 
                      """{'PID': '%(parent_id)s',
                      'NAME': '%(name)s',
                      'ENABLED': '%(enabled)s',
@@ -116,6 +116,52 @@ PARAMS = {
                      'DORDER': '%(dorder)s',
                      'MASKFLAG': '%(maskflag)s',
                      'PORT': '%(port)s',
-                     'USETLS': '%(use_tls)s'
-                    }""")
+                     'USETLS': '%(syslog_tls)s'
+                    }"""),
+                    
+    'get_recs': ("devGetDeviceList?filterByRights=false",
+                     """{'types': ['RECEIVER']}
+                     """),
+
+    'get_dstypes': ("dsGetDataSourceTypes",
+                     """{'receiverId': {'id': '%(rec_id)s'}
+                        }
+                     """),
+                     
+    'del_ds': ("dsDeleteDataSource",
+                """{'receiverId': {'id': '%(parent_id)s'},
+                    'datasourceId': {'id': '%(ds_id)s'}}
+                 """),
+                 
+    'ds_last_times': ("QRY_GETDEVICELASTALERTTIME",
+                      """
+                      """),
+                      
+    'ds_by_type': ("QRY_GETDEVICECOUNTBYTYPE",
+                      """
+                      """),
+
+   '_dev_types':  {'2', 'ERC',
+                    '3', 'datasource',
+                    '4', 'Database Event Monitor (DBM)',
+                    '5', 'DBM Database',
+                    '7', 'Policy Auditor',
+                    '10', 'Application Data Monitor (ADM)',
+                    '12', 'ELM'
+                    '14', 'Local ESM',
+                    '15', 'Advanced Correlation Engine (ACE)',
+                    '17', 'Score-based Correlation',
+                    '19', 'McAfee ePolicy Orchestrator (ePO)',
+                    '20', 'EPO',
+                    '21', 'McAfee Network Security Manager (NSP)',
+                    '23', 'NSP Port',
+                    '24', 'MVM',
+                    '25', 'Enterprise Log Search (ELS)',
+                    '254', 'client_group',
+                    },
+                    
+    'ds_details': ("dsGetDataSourceDetail",
+                    """{'datasourceId': 
+                        {'id': '%(ds_id)s'}}
+                    """)
 }
