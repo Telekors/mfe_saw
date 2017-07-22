@@ -4,7 +4,7 @@
    contain the root `toctree` directive.
 
 McAfee SIEM API Wrapper (MFE_SAW)
-=================================
+=================================+
 
 Contents:
 

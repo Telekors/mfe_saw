@@ -74,7 +74,7 @@ class Base(object):
         self._password = base64.b64encode(self._passwd.encode('utf-8')).decode()
         del self._passwd
         self._url = Base._baseurl + 'login'
-        self._method, self._data = self.get_params('login')
+        self._method, self._data = self._get_params('login')
         self._resp = self.post(self._method, self._data, raw=True)
         try:
             Base._headers['Cookie'] = self._resp.headers.get('Set-Cookie')
@@ -82,7 +82,7 @@ class Base(object):
         except AttributeError:
             raise ESMAuthError()
             
-    def get_params(self, method):
+    def _get_params(self, method):
         """
         Look up parameters in params dict
         """
@@ -99,7 +99,11 @@ class Base(object):
         """
         params = {k: v for k, v in params.items() if v is not None}
         params = '%14'.join([k + '%13' + v + '%13' for (k, v) in params.items()])
-        params = 'Request=API%13' + cmd + '%13%14' + params + '%14'
+        
+        if params:
+            params = 'Request=API%13' + cmd + '%13%14' + params + '%14'
+        else:
+            params = 'Request=API%13' + cmd + '%13%14'
         return params
 
     @staticmethod
@@ -130,6 +134,10 @@ class Base(object):
         self._data = data
         self._callback = callback
         self._raw = raw
+        
+        if not self._method:
+            raise ValueError("Method must not be None")
+        
         self._url = Base._baseurl + self._method
         
         if self._method == self._method.upper():

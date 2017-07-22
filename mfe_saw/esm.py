@@ -252,7 +252,7 @@ class ESM(Base):
             rec_id (str): self.rec_id assigned in method
         """
         self.rec_id = self.recs()[0][1]
-        self.method, self.data = self.get_params('get_dstypes')
+        self.method, self.data = self._get_params('get_dstypes')
         self.venmods = self.post(self.method, self.data, self._format_ds_types)
         return self.venmods
                     
@@ -286,7 +286,7 @@ class ESM(Base):
         """
         
         """
-        self.method, self.data = self.get_params('get_recs')
+        self.method, self.data = self._get_params('get_recs')
         self._rec_list = self.post(self.method, self.data)
         return [(self._rec['name'], self._rec['id']['id']) 
                   for self._rec in self._rec_list]

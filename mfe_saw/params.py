@@ -55,22 +55,35 @@ PARAMS = {
 
     'get_devtree': ("GRP_GETVIRTUALGROUPIPSLISTDATA",
                     """{'ITEMS': '#{DC1 + DC2}',
-                    'DID': '1',
-                    'HD': 'F',
-                    'NS': '0'}
+                        'DID': '1',
+                        'HD': 'F',
+                        'NS': '0'}
                     """),
 
-    'find_client_group': ("DS_GETDSCLIENTLIST",
-                          """{'DSID': '%(group_id)s',
-                            'SEARCH': ''}
-                         """),
+    'get_zones_devtree': ("GRP_GETVIRTUALGROUPIPSLISTDATA",
+                    """{'ITEMS': '#{DC1 + DC2}',
+                        'DID': '3',
+                        'HD': 'F',
+                        'NS': '0'}
+                    """),
 
-    'get_file': ("MISC_READFILE",
-                 """{'FNAME': '%(ftoken)s',
+    'req_client_str': ("DS_GETDSCLIENTLIST",
+                          """{'DSID': '%(_ds_id)s',
+                              'SEARCH': ''}
+                          """),
+
+    'get_rfile': ("MISC_READFILE",
+                 """{'FNAME': '%(_ftoken)s',
                  'SPOS': '0',
                  'NBYTES': '0'}
                  """),
 
+    'get_wfile': ("MISC_WRITEFILE",
+                 """{'DATA1': '%(_ds_id)s',
+                 """),
+
+                 
+                 
     'map_dtree': ("map_dtree",
                   """{'dev_type': '%(dev_type)s',
                   'name': '%(ds_name)s',
@@ -89,8 +102,8 @@ PARAMS = {
                   }
                   """),
                  
-    'add_parent': ("dsAddDataSource", 
-                """ {'datasource': {
+    'add_ds': ("dsAddDataSource", 
+                """{'datasource': {
                         'parentId': {'id': '%(parent_id)s'},
                         'name': '%(name)s',
                         'id': {'id': '%(ds_id)s'},
@@ -133,35 +146,50 @@ PARAMS = {
                     'datasourceId': {'id': '%(ds_id)s'}}
                  """),
                  
-    'ds_last_times': ("QRY_GETDEVICELASTALERTTIME",
-                      """
+    'del_client': ("DS_DELETEDSCLIENTS",
+                    """{}
+                    """
+                    ),
+                    
+    'ds_last_times': ("QRY%5FGETDEVICELASTALERTTIME",
+                      """{}
+                      """),
+                      
+    'zonetree': ("zoneGetZoneTree",
+                      """{}
                       """),
                       
     'ds_by_type': ("QRY_GETDEVICECOUNTBYTYPE",
-                      """
+                      """{}
                       """),
 
-   '_dev_types':  {'2', 'ERC',
-                    '3', 'datasource',
-                    '4', 'Database Event Monitor (DBM)',
-                    '5', 'DBM Database',
-                    '7', 'Policy Auditor',
-                    '10', 'Application Data Monitor (ADM)',
-                    '12', 'ELM'
-                    '14', 'Local ESM',
-                    '15', 'Advanced Correlation Engine (ACE)',
-                    '17', 'Score-based Correlation',
-                    '19', 'McAfee ePolicy Orchestrator (ePO)',
-                    '20', 'EPO',
-                    '21', 'McAfee Network Security Manager (NSP)',
-                    '23', 'NSP Port',
-                    '24', 'MVM',
-                    '25', 'Enterprise Log Search (ELS)',
-                    '254', 'client_group',
-                    },
+   '_dev_types':  ("dev_type_map",
+                    """{'1': 'zone',
+                        '2': 'ERC',
+                        '3': 'datasource',
+                        '4': 'Database Event Monitor (DBM)',
+                        '5': 'DBM Database',
+                        '7': 'Policy Auditor',
+                        '10': 'Application Data Monitor (ADM)',
+                        '12': 'ELM',
+                        '14': 'Local ESM',
+                        '15': 'Advanced Correlation Engine (ACE)',
+                        '16': 'Asset datasource',
+                        '17': 'Score-based Correlation',
+                        '19': 'McAfee ePolicy Orchestrator (ePO)',
+                        '20': 'EPO',
+                        '21': 'McAfee Network Security Manager (NSM)',
+                        '22': 'McAfee Network Security Platform (NSP)',
+                        '23': 'NSP Port',
+                        '24': 'McAfee Vulnerability Manager (MVM)',
+                        '25': 'Enterprise Log Search (ELS)',
+                        '254': 'client_group',
+                        '256': 'client'}
+                    """),
                     
     'ds_details': ("dsGetDataSourceDetail",
                     """{'datasourceId': 
                         {'id': '%(ds_id)s'}}
                     """)
 }
+

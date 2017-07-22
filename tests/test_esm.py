@@ -1,6 +1,28 @@
+# -*- coding: utf-8 -*-
+"""
+    mfe_saw esm test
+"""
+import pytest
+import urllib3
+from unittest.mock import Mock, patch
+
+try:
+    import esm_service
+except ModuleNotFoundError:
+    from .esm_service import get_login
+    
+urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+
+@patch('esm_service.requests.get')
+def test_request_response():
+    resp = get_login()
+    assert resp.status_code == 200
+        
+        
+        
+        
 # _dev_typeesm.time()
-# _dev_typeesm.etime()
-# _dev_typeesm.status()
+# _dev_typeesm.etime()# _dev_typeesm.status()
 # _dev_typeesm.disks()
 # _dev_typeesm.ram()
 # _dev_typeesm.backup_status()

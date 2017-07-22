@@ -43,6 +43,7 @@ def dehexify(data):
         '%2D': '-',  # Hyphen Symbol
         '%2E': '.',  # Period, dot, or full stop.
         '%2F': '/',  # Forward Slash or divide symbol.
+        '%3A': ':',  # Colon
         '%7C': '|',  # Vertical bar or pipe.
     }
 
