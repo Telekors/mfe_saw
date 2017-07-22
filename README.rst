@@ -1,5 +1,5 @@
 McAfee SIEM API Wrapper: MFE_SAW
-===============================
+================================
 
 .. image:: https://img.shields.io/pypi/v/mfe_saw.svg
         :target: https://pypi.python.org/pypi/mfe_saw

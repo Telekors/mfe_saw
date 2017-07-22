@@ -4,7 +4,7 @@
 """
 import pytest
 import urllib3
-from unittest.mock import Mock, patch
+#from unittest.mock import Mock, patch
 
 try:
     import esm_service
@@ -13,10 +13,10 @@ except ModuleNotFoundError:
     
 urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
-@patch('esm_service.requests.get')
-def test_request_response():
-    resp = get_login()
-    assert resp.status_code == 200
+#@patch('esm_service.requests.get')
+#def test_request_response():
+#    resp = get_login()
+#    assert resp.status_code == 200
         
         
         
