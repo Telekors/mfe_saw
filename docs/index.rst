@@ -15,10 +15,19 @@ Contents:
    installation
    usage
 
-Indices and tables
-==================
+User Guide:
+    ESM
+    Datasources
+    Queries
+    Watchlists
+   
+API R:
+   
+   ESM 
+   DevTree
+   DataSource 
+   Query
+   Watchlist
 
-* :ref:`genindex`
-* :ref:`modindex`
-* :ref:`search`
 
+User Guide

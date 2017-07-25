@@ -3,7 +3,7 @@
     mfe_saw esm test
 """
 import pytest
-import urllib3
+#import urllib3
 #from unittest.mock import Mock, patch
 
 try:
@@ -11,7 +11,7 @@ try:
 except ModuleNotFoundError:
     from .esm_service import get_login
     
-urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+#urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
 
 #@patch('esm_service.requests.get')
 #def test_request_response():

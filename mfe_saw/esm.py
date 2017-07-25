@@ -14,6 +14,52 @@ except ImportError:
 class ESM(Base):
     """
     ESM class
+    
+    Puvlic Methods:
+    
+        version()       Returns simple version string, '10.1.0'
+        
+        buildstamp()    Returns buildstamp string, '10.0.2 20170516001031'
+        
+        time()          Returns ESM time (GMT)
+        
+        disks()         Returns string of disk status
+        
+        ram()           Returns string of disk status
+        
+        backup_status()     Returns dict with keys:
+                             - autoBackupEnabled: bool
+                             - autoBackupDay: int
+                             - backupLastTime: str (timestamp)
+                             - backupNextTime: str (timestamp)
+        
+        callhome()      Returns True/False if callhome is active/not active
+        
+        rulestatus()    Returns dict with keys:
+                        - rulesAndSoftwareCheckEnabled: bool
+                        - rulesAndSoftLastCheck: str (timestamp)
+                        - rulesAndSoftNextCheck: str (timestamp)
+
+        status()        Returns dict with the status outputs above plus a few
+                        other less interesting details.
+               
+        timezones()     Returns dict (str, str)
+                            timezone_id: timezone_name
+        
+        tz_name_to_id(id)         Returns timezone name matching given timezone ID.
+        
+        tz_id_to_name(tz_name)    Returns timezone ID matching given timezone name.
+        
+        tz_offsets()    Returns list of timezone tuples. 
+                        (tz_id, tz_name, tz_offset)
+                        [(1, 'Midway Island, Samoa', '-11:00'),
+                         (2, 'Hawaii', '-10:00'),
+            
+        type_id_to_venmod(type_id)     Returns tuple. (vendor, model) matching
+                                       provided type_id.
+        
+        venmod_to_type_id(vendor, model)    Returns string of matching type_id
+        
     """
     def __init__(self):
         """
@@ -97,7 +143,6 @@ class ESM(Base):
         Returns:
             dict. Backup status and timestamps.
 
-        Example:
             {'autoBackupEnabled': True,
                 'autoBackupDay': 7,
                 'autoBackupHour': 0,
@@ -139,6 +184,17 @@ class ESM(Base):
         return {self.key: self.val for self.key, self.val in self.status().items()
                 if self.key in self._fields}
 
+    @lru_cache(maxsize=None)    
+    def recs(self):
+        """
+        Returns: 
+            
+        """
+        self.method, self.data = self._get_params('get_recs')
+        self._rec_list = self.post(self.method, self.data)
+        return [(self._rec['name'], self._rec['id']['id']) 
+                  for self._rec in self._rec_list]
+                
     @lru_cache(maxsize=None)   
     def _get_timezones(self):
         """
@@ -281,12 +337,3 @@ class ESM(Base):
                     for self._ven in self._venmods['vendors']
                     for self._mod in self._ven['models']]
 
-    @lru_cache(maxsize=None)    
-    def recs(self):
-        """
-        
-        """
-        self.method, self.data = self._get_params('get_recs')
-        self._rec_list = self.post(self.method, self.data)
-        return [(self._rec['name'], self._rec['id']['id']) 
-                  for self._rec in self._rec_list]

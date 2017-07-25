@@ -12,12 +12,39 @@ McAfee SIEM API Wrapper: MFE_SAW
         :alt: Documentation Status
 
 
-McAfee SIEM API Wrapper: MFE_SAW for McAfee ESM 10.x+
+McAfee SIEM API Wrapper - MFE_SAW
 
 MFE_SAW is a wrapper around the McAfee ESM API versions 10.x and above.
 
-This project attempts to provide a pythonic interface to various parts of
-the product starting with interacting with datasources. 
+This project attempts to provide a pythonic interface for specific aspects
+of the product including:
+* ESM Monitoring
+* Datasource Management (add, edit, del)
+* Simplified Query interface [TBD]
+* Watchlist Operations [TBD]
+ 
+
+The first target of this project is datasource management. With this library 
+and accompanied front-end CLI interface, datasources can be easily added by
+providing a few details. 
+
+
+dsconf/new_ds_cfg.txt
+```
+name=DC01_DNS
+ip=10.10.1.34
+rec_ip=172.16.15.10
+type=linux
+
+$ mfe_saw -a 
+
+$ mfe_saw -s "DC01_DNS"
+
+```
+
+
+
+.. code-block:: python
 
 Here is an example:
 

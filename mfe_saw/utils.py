@@ -7,6 +7,7 @@
 import time
 from functools import wraps
 
+
 def dehexify(data):
     """
     A URL and Hexadecimal Decoding Library.

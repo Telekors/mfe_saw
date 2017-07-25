@@ -115,7 +115,8 @@ PARAMS = {
                         'zoneId': '%(zone_id)s',
                         'url': '%(url)s',
                         'enabled': '%(enabled)s',
-                        'idmId': '%(idm_id)s'
+                        'idmId': '%(idm_id)s',
+                        'parameters': %(parameters)s
                     }}"""),
 
     'add_client': ("DS_ADDDSCLIENT", 
@@ -187,6 +188,30 @@ PARAMS = {
                         '256': 'client'}
                     """),
                     
+    # 'time_frames': ("timeframes",
+                    # """{'LAST_MINUTE': 1', 
+                        # 'LAST_10_MINUTES': 10, 
+                        # 'LAST_30_MINUTES': 30,
+                        # 'LAST_HOUR': 1, 
+                        # 'CURRENT_DAY': 1, 
+                        # 'PREVIOUS_DAY': -1,
+                        # 'LAST_24_HOURS', 
+                        # 'LAST_2_DAYS', 
+                        # 'LAST_3_DAYS',
+                        # 'LAST_30_DAYS', 
+                        # 'LAST_60_DAYS', 
+                        # 'LAST_90_DAYS', 
+                        # 'LAST_180_DAYS', 
+                        # 'CURRENT_WEEK', 
+                        # 'PREVIOUS_WEEK', 
+                        # 'CURRENT_MONTH', 
+                        # 'PREVIOUS_MONTH', 
+                        # 'CURRENT_QUARTER', 
+                        # 'PREVIOUS_QUARTER', 
+                        # 'CURRENT_YEAR', 
+                        # 'PREVIOUS_YEAR'}
+                    # """),
+    
     'ds_details': ("dsGetDataSourceDetail",
                     """{'datasourceId': 
                         {'id': '%(ds_id)s'}}

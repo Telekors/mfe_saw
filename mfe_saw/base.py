@@ -62,6 +62,20 @@ class Base(object):
     def login(self, host, user, passwd):
         """
         The login method
+        
+        Args:
+            host (str): IP or hostname of the ESM
+            user (str): User ID used for authentication
+            passwd (str): Password used for authentication
+        
+        Raises:
+            ESMAuthError on auth failure.
+        
+        .. code-block:: python
+        
+            from mfe_saw.esm import ESM
+            esm = ESM('NGCP', '10.0.1.2', 'password')
+       
         """
         self._host = host
         self._user = user
@@ -138,7 +152,10 @@ class Base(object):
         if not self._method:
             raise ValueError("Method must not be None")
         
-        self._url = Base._baseurl + self._method
+        try:
+            self._url = Base._baseurl + self._method
+        except TypeError:
+            raise ESMException("Are you logged in?")
         
         if self._method == self._method.upper():
             self._url = Base._basepriv

@@ -17,13 +17,14 @@ requirements = ['requests', 'prettytable']
     
 setup(
     name='mfe_saw',
-    version='0.0.2',
+    version='0.0.4',
     description="McAfee SIEM API Wrapper (MFE_SAW) for McAfee ESM 10.x+",
     author="Andy Walden",
     author_email='aw@krakencodes.com',
     url='https://github.com/andywalden/mfe_saw',
     packages=['mfe_saw'],
     package_dir={'mfe_saw': 'mfe_saw'},
+    entry_points = {'console_scripts': ['mfe_saw=mfe_saw.cli:main']},
     include_package_data=True,
     install_requires=requirements,
     license="ISC",
