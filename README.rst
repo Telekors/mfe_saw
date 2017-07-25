@@ -19,7 +19,8 @@ MFE_SAW is a wrapper around the McAfee ESM API versions 10.x and above.
 .. image:: https://raw.githubusercontent.com/andywalden/mfe_saw/master/docs/_static/mfe_saw_bw.png
     :target: http://mfe-saw.readthedocs.io/en/latest/index.html
     
-This project aims to provide a basic API wrapper around the McAfee SIEM API to help make it more accessible to as many people as possible. 
+This project aims to provide a basic API wrapper around the McAfee SIEM API to help make it more accessible to 
+as many people as possible. 
 
 
 
@@ -34,7 +35,7 @@ For developers, this project attempts to provide a pythonic interface for specif
 * Simplified Query interface [TBD]
 * Watchlist Operations [TBD]
  
-The first target of this project is datasource management. With this library and accompanied front-end CLI interface, datasources can be easily added by providing a few details. 
+The first target of this project is datasource management. With this library and accompanied front-end CLI interface, datasources can be easily added by putting a few details into a file and dropping into a directory. When the script runs, it will check the directory, validate the datasource and add it to the ESM. Client datasources are supported also.
 
 dsconf/new_ds_cfg.txt
 
