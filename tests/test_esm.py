@@ -8,7 +8,7 @@ import pytest
 
 try:
     import esm_service
-except ModuleNotFoundError:
+except ImportError:
     from .esm_service import get_login
     
 #urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)

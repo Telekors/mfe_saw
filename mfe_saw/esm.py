@@ -6,10 +6,7 @@
 import json
 from functools import lru_cache
 
-try:
-    from mfe_saw.base import Base
-except ImportError:
-    from base import Base
+from mfe_saw.base import Base
 
 class ESM(Base):
     """

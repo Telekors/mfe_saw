@@ -17,16 +17,10 @@ from itertools import chain
 from io import StringIO
 from functools import partial
 
-try:
-    from mfe_saw.base import Base
-    from mfe_saw.esm import ESM
-    from mfe_saw.utils import dehexify
-    from mfe_saw.exceptions import ESMException
-except ImportError:
-    from base import Base
-    from esm import ESM
-    from utils import dehexify
-    from exceptions import ESMException
+from mfe_saw.base import Base
+from mfe_saw.esm import ESM
+from mfe_saw.utils import dehexify
+from mfe_saw.exceptions import ESMException
 
 class DataSource(Base):
     """

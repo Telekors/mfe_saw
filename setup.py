@@ -7,7 +7,14 @@ try:
 except ImportError:
     from distutils.core import setup
 
-
+if sys.argv[-1] == 'publish':
+    os.system("python setup.py sdist upload")
+    os.system("python setup.py bdist_wheel upload")
+    print("You probably want to also tag the version now:")
+    print("  git tag -a %s -m 'version %s'" % (version, version))
+    print("  git push --tags")
+    sys.exit()
+    
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
