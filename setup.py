@@ -25,7 +25,7 @@ requirements = ['requests', 'prettytable']
     
 setup(
     name='mfe_saw',
-    version='0.0.4',
+    version='0.0.5',
     description="McAfee SIEM API Wrapper (MFE_SAW) for McAfee ESM 10.x+",
     author="Andy Walden",
     author_email='aw@krakencodes.com',
