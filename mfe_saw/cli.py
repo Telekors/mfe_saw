@@ -13,7 +13,7 @@ from pathlib import Path
 from mfe_saw.esm import ESM 
 from mfe_saw.exceptions import ESMException
 from mfe_saw.datasource import DataSource, DevTree
-
+from mfe_saw.version import __version__
 
     
 def get_args(args):
@@ -36,6 +36,13 @@ def get_args(args):
                              help='Search for datasource name, hostname, or IP.'
                                    'May require quotes around the name if there'
                                    'are spaces.')
+    parser.add_argument('-v',
+                             action='store_true', dest='esm_version', default=None,
+                             help='Prints the software release version for the ESM.')
+    
+    parser.add_argument("--version", action="version", help="mfe_saw version",
+                                 version="%(prog)s {}".format(__version__))
+                             
     pargs = parser.parse_args()        
     return pargs
 
@@ -66,9 +73,9 @@ class Config(object):
         else:
             conf_path = None
 
-        paths = [os.path.join(module_dir, 'mfe_saw.ini'), 'mfe_saw.ini']
+        paths = [os.path.join(module_dir, '.mfe_saw.ini'), '.mfe_saw.ini']
         if conf_path is not None:
-            paths.insert(1, os.path.join(conf_path, 'mfe_saw.ini'))
+            paths.insert(1, os.path.join(conf_path, '.mfe_saw.ini'))
         config.read(paths)
         cls.CONFIG = config
 
@@ -504,6 +511,11 @@ def main():
         devtree = DevTree()
         print(search(pargs.search, devtree))
 
+    
+    if pargs.esm_version:
+        print(esm.version())
+        
+        
 if __name__ == "__main__":
     try:
         main()

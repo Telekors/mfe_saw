@@ -10,16 +10,10 @@ import json
 import re
 import urllib.parse as urlparse
 from concurrent.futures import ThreadPoolExecutor
-
 import requests
-import urllib3
 
-try:
-    from mfe_saw.params import PARAMS
-    from mfe_saw.exceptions import ESMException, ESMDataSourceNotFound
-except ImportError:
-    from params import PARAMS
-    from exceptions import ESMException, ESMDataSourceNotFound
+from mfe_saw.params import PARAMS
+from mfe_saw.exceptions import ESMException, ESMDataSourceNotFound
 
 class Base(object):
     """
@@ -55,7 +49,7 @@ class Base(object):
         self._name = None
 
         if not self._ssl_verify:
-            urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
+            requests.packages.urllib3.disable_warnings()
 
         self._ex = ThreadPoolExecutor(max_workers=Base._max_workers,)
 
@@ -70,17 +64,15 @@ class Base(object):
         
         Raises:
             ESMAuthError on auth failure.
-        
-        .. code-block:: python
-        
-            from mfe_saw.esm import ESM
-            esm = ESM('NGCP', '10.0.1.2', 'password')
+                
+            >>> from mfe_saw.esm import ESM
+            >>> esm = ESM()
+            >>> esm = ESM('NGCP', '10.0.1.2', 'password')
        
         """
         self._host = host
         self._user = user
         self._passwd = passwd
-
         Base._baseurl = 'https://{}/rs/esm/'.format(self._host)
         Base._basepriv = 'https://{}/ess'.format(self._host)
 
