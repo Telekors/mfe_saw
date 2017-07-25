@@ -369,7 +369,7 @@ class DevTree(Base):
             bool: True/False the name or IP matches the provided search term.
         """
         self._cterm = term
-        if self._ds(self._cterm):
+        if self.search(self._cterm):
             return True
         else:
             return None

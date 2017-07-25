@@ -501,7 +501,7 @@ def main():
                 print("Problem occured while adding datasource and it was not added.")
             
     if pargs.search:
-        init_libs(config)
+        devtree = DevTree()
         print(search(pargs.search, devtree))
 
 if __name__ == "__main__":
