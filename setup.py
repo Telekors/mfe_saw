@@ -9,13 +9,13 @@ except ImportError:
     from distutils.core import setup
 
 if sys.argv[-1] == 'publish':
-    os.system("python setup.py sdist upload")
-    os.system("python setup.py bdist_wheel upload")
-    print("You probably want to also tag the version now:")
-    print("  git tag -a %s -m 'version %s'" % (version, version))
-    print("  git push --tags")
+    os.system('python setup.py sdist upload')
+    os.system('python setup.py bdist_wheel upload')
+    print('You probably want to also tag the version now:')
+    print('  git tag -a v0.0.7 -m "v0.0.7"')
+    print('  git push --tags')
     sys.exit()
-    
+        
 with open('README.rst') as readme_file:
     readme = readme_file.read()
 
@@ -25,7 +25,7 @@ requirements = ['requests', 'prettytable']
     
 setup(
     name='mfe_saw',
-    version='0.0.6',
+    version='0.0.7',
     description="McAfee SIEM API Wrapper (MFE_SAW) for McAfee ESM 10.x+",
     author="Andy Walden",
     author_email='aw@krakencodes.com',
@@ -49,3 +49,4 @@ setup(
     test_suite='tests',
     tests_require=test_requirements,
     python_requires='>=3')
+
