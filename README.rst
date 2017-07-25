@@ -38,17 +38,19 @@ The first target of this project is datasource management. With this library and
 
 dsconf/new_ds_cfg.txt
 
-```
+.. code-block:: bash
+
     name=DC01_DNS
     ip=10.10.1.34
     rec_ip=172.16.15.10
     type=linux
-```
-```
+
+.. code-block:: bash
+
 	$ mfe_saw -a 
 	DataSource successfully added: DC01_DNS
 
-```
+
 
 
 
