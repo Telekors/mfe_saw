@@ -19,23 +19,32 @@ MFE_SAW is a wrapper around the McAfee ESM API versions 10.x and above.
 .. image:: https://raw.githubusercontent.com/andywalden/mfe_saw/master/docs/_static/mfe_saw_bw.png
     :target: http://mfe-saw.readthedocs.io/en/latest/index.html
     
-This project aims to provide a basic API wrapper around the McAfee SIEM API to help make it more accessible to 
-as many people as possible. 
+This project aims to provide a basic API wrapper around the McAfee SIEM API to help make it more 
+accessible to as many people as possible. 
 
 
 
 
-Whether it be to add the day's new datasources, querying the raw logs for 200 IP addresses for different date ranges or integrating a list of datasources that have been silent the past 24 hours into a report, when you're responsible for a repetitive task you should be spending your time automating, not repeating. It's time for MFE_SAW!
+Whether it be to add the day's new datasources, querying the raw logs for 200 IP addresses for 
+different date ranges or integrating a list of datasources that have been silent the past 24 hours 
+into a report, when you're responsible for a repetitive task you should be spending your time automating, 
+not repeating. It's time for MFE_SAW!
 
-For SIEM operators, the project includes a CLI front end to automate tasks that would otherwise be time consuming or repetitive in the user interface.
+For SIEM operators, the project includes a CLI front end to automate tasks that would otherwise be time 
+consuming or repetitive in the user interface.
 
-For developers, this project attempts to provide a pythonic interface for specific aspects of the product including:
+For developers, this project attempts to provide a pythonic interface for specific aspects of the product 
+including:
+
 * ESM Monitoring
 * Datasource Management (add, edit, del - including Client datasources)
 * Simplified Query interface [TBD]
 * Watchlist Operations [TBD]
  
-The first target of this project is datasource management. With this library and accompanied front-end CLI interface, datasources can be easily added by putting a few details into a file and dropping into a directory. When the script runs, it will check the directory, validate the datasource and add it to the ESM. Client datasources are supported also.
+The first target of this project is datasource management. With this library and accompanied front-end CLI 
+interface, datasources can be easily added by putting a few details into a file and dropping into a directory. 
+When the script runs, it will check the directory, validate the datasource and add it to the ESM. Client 
+datasources are supported also.
 
 dsconf/new_ds_cfg.txt
 
