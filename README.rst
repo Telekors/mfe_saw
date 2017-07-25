@@ -12,11 +12,9 @@ McAfee SIEM API Wrapper: MFE_SAW
         :alt: Documentation Status
 
 
-McAfee SIEM API Wrapper - MFE_SAW
-
 MFE_SAW is a wrapper around the McAfee ESM API versions 10.x and above.
 
-It is time to SAW through repetitive SIEM tasks!
+**It is time to SAW through repetitive SIEM tasks!**
 
 .. image:: https://raw.githubusercontent.com/andywalden/mfe_saw/master/docs/_static/mfe_saw_bw.png
     :target: http://mfe-saw.readthedocs.io/en/latest/index.html
