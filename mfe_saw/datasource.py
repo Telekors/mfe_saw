@@ -289,34 +289,12 @@ class DevTree(Base):
                                 3 = Datasources including EPO/NSM
                                 4 = Children and Clients
                         
-        last_times('time')    Returns a list of DataSource objects that 
-                                 the ESM has NOT heard from since the 
-                                 provided timeframe.
-                                
-                                If no time is given, the default is LAST_24_HOURS
-                                
-                                Other valid timeframe keywords are:
-                                - LAST_MINUTE
-                                - LAST_10_MINUTES
-                                - LAST_30_MINUTES
-                                - LAST_HOUR
-                                - CURRENT_DAY
-                                - PREVIOUS_DAY
-                                - LAST_24_HOURS
-                                - LAST_2_DAYS
-                                - LAST_3_DAYS
-                                - LAST_30_DAYS
-                                - LAST_60_DAYS
-                                - LAST_90_DAYS
-                                - LAST_180_DAYS
-                                - CURRENT_WEEK
-                                - PREVIOUS_WEEK
-                                - CURRENT_MONTH
-                                - PREVIOUS_MONTH
-                                - CURRENT_QUARTER
-                                - PREVIOUS_QUARTER
-                                - CURRENT_YEAR
-                                - PREVIOUS_YEAR
+        last_times(days=,       Returns a list of DataSource objects that 
+                   hours=,      the ESM has NOT heard from since the
+                   minutes=)    provided timeframe.
+                                  args are cummulative, 
+                               e.g. (days=30, hours=5) will added together
+
 
         refresh()   Rebuilds the tree
                             
@@ -439,10 +417,25 @@ class DevTree(Base):
         Returns:
             List of tuples (int,str,str,str) (step, name, ip, parent_id)        
         """
+                self._steptree = []
+        self._ones = ['14']
+        self._twos = ['2', '4', '10', '12', '15', '25']
+        self._threes = ['3', '5', '7', '17', '19', '20', '21', '24', '254']
+        self._fours = ['7','17', '23', '256']
+
         for self._ds in DevTree._DevTree:
-            self._step = (self._ds['idx'], self._ds['name'], self._ds['ds_ip'], 
-                            self._ds['parent_id'],)
-            print(self._step)
+            if self._ds['desc_id'] in self._ones:
+                self._ds['depth'] = '1'
+            elif self._ds['desc_id'] in self._twos:
+                self._ds['depth'] = '2'
+            elif self._ds['desc_id'] in self._threes:
+                self._ds['depth'] = '3'
+            else:
+                self._ds['depth'] = '4'
+            self._steptree.append((self._ds['idx'], self._ds['name'], 
+                                    self._ds['ds_ip'], self._ds['depth'],))
+        return self._steptree
+
                     
     def refresh(self):
         """
