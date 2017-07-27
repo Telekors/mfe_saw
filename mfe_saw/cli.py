@@ -7,8 +7,10 @@ import csv
 import json
 import os
 import sys
+import textwrap
 from configparser import ConfigParser, NoSectionError, MissingSectionHeaderError
 from pathlib import Path
+from datetime import timedelta, datetime
 
 from mfe_saw.esm import ESM 
 from mfe_saw.exceptions import ESMException
@@ -23,19 +25,26 @@ def get_args(args):
     
     formatter_class = argparse.RawDescriptionHelpFormatter
     
-    parser = argparse.ArgumentParser(formatter_class=formatter_class,
-                                          description='McAfee SIEM API Wrapper')
-                                          
+    parser = argparse.ArgumentParser(description='McAfee SIEM API Wrapper',
+                usage='Use "mfe_saw --help" for more information',
+                formatter_class=argparse.RawTextHelpFormatter)
+                                                  
     parser.add_argument('-a', '--add', 
                              action='store_true', dest='add', default=None,
                              help='Scan <dsdir> for new datasource files')
 
                              
-    parser.add_argument('-s', '--search', 
+    parser.add_argument('-s',  
                              dest='search', nargs='?', default=None, metavar='term',
                              help='Search for datasource name, hostname, or IP.'
                                    'May require quotes around the name if there'
                                    'are spaces.')
+                                   
+    parser.add_argument('-l',  
+                             dest='days', nargs='?', const=1, metavar='filter', type=int,
+                             help=('Display datasources and date of last event.\n'
+                                   'Can be filtered by: (days=x'))
+                                   
     parser.add_argument('-v',
                              action='store_true', dest='esm_version', default=None,
                              help='Prints the software release version for the ESM.')
@@ -515,6 +524,18 @@ def main():
     if pargs.esm_version:
         print(esm.version())
         
+    if pargs.days:
+        devtree = DevTree()
+        time_filter = datetime.now() - timedelta(days=pargs.days)
+        format = '%m/%d/%Y %H:%M:%S'
+        for ds in devtree._DevTree:
+           if ds['last_time'] and ds['desc_id'] == '3':
+               if datetime.strptime(ds['last_time'], format) < time_filter:
+                    fields = [ds['name'], ds['ds_ip'], ds['model'], 
+                               ds['rec_name'], ds['last_time']]
+                    print(','.join(fields))
+                
+
         
 if __name__ == "__main__":
     try:

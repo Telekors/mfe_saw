@@ -417,7 +417,7 @@ class DevTree(Base):
         Returns:
             List of tuples (int,str,str,str) (step, name, ip, parent_id)        
         """
-                self._steptree = []
+        self._steptree = []
         self._ones = ['14']
         self._twos = ['2', '4', '10', '12', '15', '25']
         self._threes = ['3', '5', '7', '17', '19', '20', '21', '24', '254']
@@ -457,37 +457,13 @@ class DevTree(Base):
         return [self._rec for self._rec in DevTree._DevTree 
                     if self._rec['desc_id'] == '2']
     
-    def _get_last_event_times(self):
-        """
-        
-        Returns:
-                    
-        """
-        self._method, self._data = self._get_params('ds_last_times')
-        self._resp = self.post(self._method, self._data)
-        return dehexify(self._resp['ITEMS'])
-
-    def _insert_ds_last_times(self, last_times_str):
-        """
-        Parse event times str and insert it into the _devtree
-        
-        Returns: 
-            List of datasource dicts - the devtree
-        """
-        self._last_times_io = StringIO(last_times_str)
-        self._last_times_csv = csv.reader(self._devtree_io, delimiter=',')
-        self._last_times_lod = []
-        for self._row in self._last_times_csv:
-            if len(self._row) == 0:
-                continue
-
     def _build_devtree(self):
         """
         Coordinates assembly of the devtree object
         """
         self._devtree = self._get_devtree()
         self._devtree = self._devtree_to_lod()
-        self._devtree = self._insert_parent_ids()
+        self._devtree = self._insert_rec_info()
         self._client_containers = self._get_client_containers()
 
         """
@@ -528,6 +504,8 @@ class DevTree(Base):
         self._devtree = self._insert_zone_ids()            
         self._devtree = self._insert_venmods()
         self._devtree = self._insert_desc_names()
+        self._last_times = self._get_last_event_times()
+        self._insert_ds_last_times()
         DevTree._DevTree = self._devtree
                
     def _get_devtree(self):
@@ -587,7 +565,7 @@ class DevTree(Base):
             self._devtree_lod.append(self._ds_fields)
         return self._devtree_lod
 
-    def _insert_parent_ids(self):
+    def _insert_rec_info(self):
         """
         Adds parent_ids to datasources in the tree based upon the 
         ordered list provided by the ESM. All the datasources below
@@ -597,12 +575,16 @@ class DevTree(Base):
             List of datasource dicts
         """
         self._pid = '0'
+        self._rec_name = ''
         for self._ds in self._devtree:
-            if self._ds['desc_id'] == '2':
+            if self._ds['desc_id'] in ['2', '4', '15']:
                 self._pid = self._ds['ds_id']
-
-            if self._ds['desc_id'] == '3':
+                self._rec_name = self._ds['name']
+                continue
+            
+            if self._ds['desc_id'] in ['3', '5', '7', '17']:
                 self._ds['parent_id'] = self._pid
+                self._ds['rec_name'] = self._rec_name
         return self._devtree
 
     def _get_client_containers(self):
@@ -799,3 +781,28 @@ class DevTree(Base):
         return [self._dev for self._dev in DevTree._DevTree 
                         if int(self._dev['client_groups']) > 0 
                         and self._dev['desc_id'] == '3']
+                        
+    def _get_last_event_times(self):
+        """
+        Returns:
+            string with datasource names and last event times.
+        """
+        self._method, self._data = self._get_params('ds_last_times')
+        self._resp = self.post(self._method, self._data)
+        return dehexify(self._resp['ITEMS'])
+
+    def _insert_ds_last_times(self):
+        """
+        Parse event times str and insert it into the _devtree
+        
+        Returns: 
+            List of datasource dicts - the devtree
+        """
+        self._last_times_io = StringIO(self._last_times)
+        self._last_times_csv = csv.reader(self._last_times_io, delimiter=',')
+        for self._row in self._last_times_csv:
+            for self._ds in self._devtree:
+                self._ds['last_time'] = self._row[3]
+            else: 
+                self._ds['last_time'] = ''
+        return self._devtree
