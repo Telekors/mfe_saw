@@ -78,7 +78,7 @@ class Config(object):
         elif 'XDG_CONFIG_HOME' in os.environ:  
             conf_path = os.environ['XDG_CONFIG_HOME']
         elif 'HOME' in os.environ:  
-            conf_path = os.path.join(os.environ['HOME'], '.config')
+            conf_path = os.path.join(os.environ['HOME'])
         else:
             conf_path = None
 
@@ -423,8 +423,8 @@ def main():
     config = Config()
     pargs = get_args(sys.argv)
     esm = ESM()
-    esm.login(host=config.esm_host, user=config.esm_user, 
-                passwd=config.esm_passwd)
+    esm.login(host=config.esmhost, user=config.esmuser, 
+                passwd=config.esmpass)
     
     if pargs.add:
         ds_dir = config.ds_dir
@@ -535,6 +535,8 @@ def main():
                                ds['rec_name'], ds['last_time']]
                     print(','.join(fields))
                 
+
+    print(esm.type_id_to_venmod('295'))
 
         
 if __name__ == "__main__":
