@@ -17,8 +17,8 @@ def dehexify(data):
 
     hexen = {
         '\x1c': ',',  # Replacing Device Control 1 with a comma.
-        '\x11': ',',  # Replacing Device Control 2 with a new line.
-        '\x12': '\n',  # Space
+        '\x11': '\n',  # Replacing Device Control 2 with a new line.
+        '\x12': ' ',  # Space
         '\x22': '"',  # Double Quotes
         '\x23': '#',  # Number Symbol
         '\x27': '\'',  # Single Quote
