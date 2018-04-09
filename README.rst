@@ -46,14 +46,19 @@ interface, datasources can be easily added by putting a few details into a file 
 When the script runs, it will check the directory, validate the datasource and add it to the ESM. Client 
 datasources are supported also.
 
-dsconf/new_ds_cfg.txt
+c:\Users\USERNAME\AppData\Roaming\.mfe_saw.ini
 
 .. code-block:: bash
 
-    name=DC01_DNS
-    ip=10.10.1.34
-    rec_ip=172.16.15.10
-    type=linux
+	[esm]
+	esmuser=NGCP
+	esmpass=
+	esmhost=
+	esm_host=
+	esm_user=NGCP
+	esm_passwd=
+	dsconfigdir=dsconf
+	ds_dir=dsconf
 
 .. code-block:: bash
 
