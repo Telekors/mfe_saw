@@ -46,7 +46,7 @@ interface, datasources can be easily added by putting a few details into a file 
 When the script runs, it will check the directory, validate the datasource and add it to the ESM. Client 
 datasources are supported also.
 
-c:\Users\USERNAME\AppData\Roaming\.mfe_saw.ini
+Appdata\\Roaming\\.mfe_saw.ini
 
 .. code-block:: bash
 
