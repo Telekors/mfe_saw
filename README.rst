@@ -46,19 +46,30 @@ interface, datasources can be easily added by putting a few details into a file 
 When the script runs, it will check the directory, validate the datasource and add it to the ESM. Client 
 datasources are supported also.
 
-AppData\\Roaming\\.mfe_saw.ini
+-------------
+Configuration
+-------------
 
-.. code-block:: bash
+This script requires a '.mfe\_saw.ini' file the local directory \(\%AppData\%\) or in your 
+home directory. **This file contains sensitive clear text credentials for 
+the McAfee ESM so it is important it be protected.**
 
-	[esm]
-	esmuser=NGCP
-	esmpass=
-	esmhost=
-	esm_host=
-	esm_user=NGCP
-	esm_passwd=
-	dsconfigdir=dsconf
-	ds_dir=dsconf
+It looks like this:
+
+::
+
+    [esm]
+    esmuser=NGCP
+    esm_user=NGCP
+    esmpass=
+    esm_passwd=
+    esmhost=10.10.10.10
+    esm_host=10.10.10.10
+    dsconfigdir=dsconf
+    ds_dir=dsconf
+
+An example mfe-saw.ini is available in the download or at:
+https://github.com/andywalden/esmcheckds2/blob/master/mfe\_saw.ini
 
 .. code-block:: bash
 
